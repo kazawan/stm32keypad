@@ -39,6 +39,9 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 #define KEY_NUM 15
+
+#define default_color ws_color(255, 0, 255)
+#define default_color2 ws_color(0, 255, 0)
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -95,7 +98,7 @@ KEY_MAP key_map[KEY_NUM] = {
     {keypad_7}, {keypad_8}, {keypad_9}, {keypad_minus}, {keypad_4}, {keypad_5}, {keypad_6}, {keypad_plus}, {keypad_1}, {keypad_2}, {keypad_3}, {keypad_enter}, {keypad_dot}, {keypad_0}, {FN_KEY}};
 
 KEY_MAP key_map_layer1[KEY_NUM] = {
-    {None_key}, {None_key}, {keypad_Delete}, {keypad_divide}, {None_key}, {None_key}, {None_key}, {keypad_multiply}, {key_a}, {key_b}, {None_key}, {keypad_enter}, {RIGHT_CTRL_KEY}, {RIGHT_SHIFT_KEY}, {FN_KEY}};
+    {keypad_ESC}, {keypad_8}, {keypad_Delete}, {keypad_divide}, {keypad_4}, {keypad_5}, {keypad_6}, {keypad_multiply}, {keypad_1}, {keypad_2}, {keypad_3}, {keypad_enter}, {keypad_dot}, {keypad_0}, {FN_KEY}};
 
 KEY_typedef KEYPAD[KEY_NUM];
 
@@ -106,24 +109,24 @@ void key_handler(int i)
     KEY_LAYER = 1;
     for (int i = 0; i < PIXEL_NUMS; i++)
     {
-      ws_setPixelColor(i, ws_color(0, 255, 0));
+      ws_setPixelColor(i, default_color2);
     }
   }
-  else if (i == 12 && KEY_LAYER == 1)
-  {
-    modify_buff |= 0x10;
-    keyboardHID.MODIFIER = modify_buff;
-  }
-  else if (i == 10 && KEY_LAYER == 1)
-  {
-    modify_buff |= 0x80;
-    keyboardHID.MODIFIER = modify_buff;
-  }
-  else if (i == 13 && KEY_LAYER == 1)
-  {
-    modify_buff |= 0x20;
-    keyboardHID.MODIFIER = modify_buff;
-  }
+  // else if (i == 12 && KEY_LAYER == 1)
+  // {
+  //   modify_buff |= 0x10;
+  //   keyboardHID.MODIFIER = modify_buff;
+  // }
+  // else if (i == 10 && KEY_LAYER == 1)
+  // {
+  //   modify_buff |= 0x80;
+  //   keyboardHID.MODIFIER = modify_buff;
+  // }
+  // else if (i == 13 && KEY_LAYER == 1)
+  // {
+  //   modify_buff |= 0x20;
+  //   keyboardHID.MODIFIER = modify_buff;
+  // }
   else
   {
     KEYPAD[i].buffer_index = find_buff_emtpy_index(&keyboardHID, 8);
@@ -153,24 +156,24 @@ void key_handler_release(int i)
     KEY_LAYER = 0;
     for (int i = 0; i < PIXEL_NUMS; i++)
     {
-      ws_setPixelColor(i, ws_color(255, 0, 255));
+      ws_setPixelColor(i, default_color);
     }
   }
-  else if (i == 10 && KEY_LAYER == 1)
-  {
-    modify_buff &= 0x7F;
-    keyboardHID.MODIFIER = modify_buff;
-  }
-  else if (i == 12 && KEY_LAYER == 1)
-  {
-    modify_buff &= 0xEF;
-    keyboardHID.MODIFIER = modify_buff;
-  }
-  else if (i == 13 && KEY_LAYER == 1)
-  {
-    modify_buff &= 0xDF;
-    keyboardHID.MODIFIER = modify_buff;
-  }
+  // else if (i == 10 && KEY_LAYER == 1)
+  // {
+  //   modify_buff &= 0x7F;
+  //   keyboardHID.MODIFIER = modify_buff;
+  // }
+  // else if (i == 12 && KEY_LAYER == 1)
+  // {
+  //   modify_buff &= 0xEF;
+  //   keyboardHID.MODIFIER = modify_buff;
+  // }
+  // else if (i == 13 && KEY_LAYER == 1)
+  // {
+  //   modify_buff &= 0xDF;
+  //   keyboardHID.MODIFIER = modify_buff;
+  // }
   else
   {
     remove_buff(KEYPAD[i].buffer_index, &keyboardHID);
@@ -216,10 +219,10 @@ int main(void)
 
   ws_clearAll();
   ws_show();
-  ws_setBrightness(128);
+  ws_setBrightness(50);
   for (int i = 0; i < PIXEL_NUMS; i++)
   {
-    ws_setPixelColor(i, ws_color(255, 0, 255));
+    ws_setPixelColor(i, default_color);
   }
   ws_pixel_to_buffer();
   ws_show();
